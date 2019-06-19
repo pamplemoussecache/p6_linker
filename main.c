@@ -39,18 +39,7 @@ int main(int argc, char* argv[]) {
     elf_head.e_shnum = 5;		/* Section header table entry count */
     elf_head.e_shstrndx = 4;		/* Section header string table index */
 
-    //Not sure why this is needed but it is
-    Elf64_Shdr null_hdr;
-    null_hdr.sh_name = 0;		/* Section name (string tbl index) */
-    null_hdr.sh_type = SHT_NULL;		/* Section type */
-    null_hdr.sh_flags = 0;		/* Section flags */
-    null_hdr.sh_addr = 0;		/* Section virtual addr at execution */
-    null_hdr.sh_offset = 0;		/* Section file offset */
-    null_hdr.sh_size = 0;		/* Section size in bytes */
-    null_hdr.sh_link = 0;		/* Link to another section */
-    null_hdr.sh_info = 0;		/* Additional section information */
-    null_hdr.sh_addralign = 0;		/* Section alignment */
-    null_hdr.sh_entsize = 00;		/* Entry size if section holds table */
+    Elf64_Shdr null_hdr = {0, SHT_NULL, 0, 0, 0, 0, 0, 0, 0, 0};
 
     FILE* mbc_file = fopen(argv[1], "r");
     if (NULL == mbc_file)
