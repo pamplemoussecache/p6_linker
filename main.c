@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
     symtab_hdr.sh_link = 3;		/* Link to another section */
     symtab_hdr.sh_info = 2;		/* Additional section information */
     symtab_hdr.sh_addralign = 8;		/* Section alignment */
-    symtab_hdr.sh_entsize = 0x18;		/* Entry size if section holds table */
+    symtab_hdr.sh_entsize = sizeof(Elf64_Sym);		/* Entry size if section holds table */
 
     char* strtab_sgmt = "\0_binary_test_txt_start\0_binary_test_txt_end\0_binary_test_txt_size\0";
 
