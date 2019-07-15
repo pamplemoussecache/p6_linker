@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
     elf_head.e_ident[EI_VERSION] = (unsigned char)EV_CURRENT;
     elf_head.e_ident[EI_OSABI] = (unsigned char)ELFOSABI_NONE; /* Always UNIX System V ABI FIXME */
     elf_head.e_type = (Elf64_Half)ET_REL; /* Object file type */
-    elf_head.e_machine = EM_X86_64; /* Architecture */
+    elf_head.e_machine = EM_X86_64; /* Architecture FIXME*/
     elf_head.e_version = 0x1; /* Object file version */
     elf_head.e_entry = 0x0; /* Entry point virtual address */
     elf_head.e_phoff = 0; /*Program header table file offset */
