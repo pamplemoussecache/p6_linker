@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
     Elf64_Shdr null_hdr = {0, SHT_NULL, 0, 0, 0, 0, 0, 0, 0, 0};
 
-    FILE* mbc_file = fopen(argv[1], "r");
+    FILE* mbc_file = fopen(argv[1], "rb");
     if (NULL == mbc_file)
     {
         printf("Error opening MBC file\n");
@@ -50,11 +50,11 @@ int main(int argc, char* argv[]) {
     fseek(mbc_file, 0L, SEEK_END);
     long num_bytes = ftell(mbc_file);
     fseek(mbc_file, 0L, SEEK_SET);
-    char* rodata_sgmt = (char*) calloc(num_bytes, sizeof(char));
+    char rodata_sgmt[2872];//(char*) calloc(num_bytes, sizeof(char));
     if (NULL == rodata_sgmt) {
         return 0;
     }
-    fread(rodata_sgmt, sizeof(char), num_bytes, mbc_file);
+    int rodata_size = fread(rodata_sgmt, 1, num_bytes, mbc_file);
     fclose(mbc_file);
 
     Elf64_Shdr rodata_hdr;
@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     rodata_hdr.sh_flags = SHF_ALLOC;		/* Section flags */
     rodata_hdr.sh_addr = 0;		/* Section virtual addr at execution */
     rodata_hdr.sh_offset = sizeof(elf_head) + 5*sizeof(Elf64_Shdr);		/* Section file offset */
-    rodata_hdr.sh_size = strlen(rodata_sgmt);		/* Section size in bytes */
+    rodata_hdr.sh_size = rodata_size;		/* Section size in bytes */
     rodata_hdr.sh_link = 0;		/* Link to another section */
     rodata_hdr.sh_info = 0;		/* Additional section information */
     rodata_hdr.sh_addralign = 1;		/* Section alignment */
