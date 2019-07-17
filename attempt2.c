@@ -19,22 +19,18 @@ int main(int argc, char* argv[])
     char *data_start     = _binary_test_txt_start;
     char *data_end       = _binary_test_txt_end;
     size_t data_size  = _binary_test_txt_end - _binary_test_txt_start;
-    printf("%ld %s\n", data_size, data_start);
 
     char temp_name[] = "p6_XXXXXX";
     int temp = mkstemp(temp_name);
     FILE* sfd = fdopen(temp, "wb");
     fwrite(data_start, data_size, 1, sfd);
+    fclose(sfd);
 
     char* command = calloc(strlen(temp_name) + strlen(argv[1]) + 10,sizeof(char));
-    //sprintf(command, "%s -b '%s'", argv[1], data_start);
     sprintf(command, "%s -b %s", argv[1], temp_name);
-    printf("%s\n", command);
     int err = system(command);
-    printf("%d\n", err);
 
-    fclose(sfd);
-    //remove(temp_name);
+    remove(temp_name);
 
     return 0;
 }
