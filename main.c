@@ -6,9 +6,13 @@
 
 #include "../MoarVM/src/gen/config.h"
 
+/* These are external references to the symbols created by OBJCOPY */
+extern char _binary_test_txt_start[];
+extern char _binary_test_txt_end[];
+
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        printf("Input is of format './linker <MBC file>'\n");
+        printf("Input is of format './elfmaker <file to embed>'\n");
         exit(0);
     }
 
@@ -44,13 +48,13 @@ int main(int argc, char* argv[]) {
     FILE* mbc_file = fopen(argv[1], "rb");
     if (NULL == mbc_file)
     {
-        printf("Error opening MBC file\n");
+        printf("Error opening file\n");
         exit(0);
     }
     fseek(mbc_file, 0L, SEEK_END);
     long num_bytes = ftell(mbc_file);
     fseek(mbc_file, 0L, SEEK_SET);
-    char rodata_sgmt[2872];//(char*) calloc(num_bytes, sizeof(char));
+    char* rodata_sgmt = (char*) calloc(num_bytes, sizeof(char));
     if (NULL == rodata_sgmt) {
         return 0;
     }
@@ -115,7 +119,7 @@ int main(int argc, char* argv[]) {
     shstrtab_hdr.sh_addralign  = 1;		/* Section alignment */
     shstrtab_hdr.sh_entsize = 0;		/* Entry size if section holds table */
 
-    FILE* elf_file = fopen("hello_world", "w+");
+    FILE* elf_file = fopen(argv[1], "w+");
     if (NULL == elf_file) {
         printf("Error opening ELF file\n");
         exit(0);
