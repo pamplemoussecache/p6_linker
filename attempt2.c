@@ -9,12 +9,14 @@ extern char _binary_test_txt_start[];
 extern char _binary_test_txt_end[];
 //extern char _binary_test_txt_size[];
 
+int err;
+
 int main(int argc, char* argv[])
 {
-    if (argc != 2) {
-        printf("Input is of format './a.out <perl6>'\n");
-        exit(0);
-    }
+    // if (argc != 2) {
+    //     printf("Input is of format './a.out <perl6>'\n");
+    //     exit(0);
+    // }
 
     char *data_start     = _binary_test_txt_start;
     char *data_end       = _binary_test_txt_end;
@@ -26,11 +28,14 @@ int main(int argc, char* argv[])
     fwrite(data_start, data_size, 1, sfd);
     fclose(sfd);
 
-    char* command = calloc(strlen(temp_name) + strlen(argv[1]) + 10,sizeof(char));
-    sprintf(command, "%s -b %s", argv[1], temp_name);
-    int err = system(command);
 
+    char* command = calloc(39 + strlen(temp_name), sizeof(char));
+    sprintf(command, "perl_path=`which perl6`; $perl_path -b %s", temp_name);
+    err = system(command);
+
+    free(command);
     remove(temp_name);
+    remove(temp_name+3);
 
     return 0;
 }
