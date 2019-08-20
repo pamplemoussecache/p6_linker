@@ -1,0 +1,17 @@
+There are still a lot of features that it would be nice to add!
+These are some of the ones that people have requested over the course of this summer:
+
+- Change --bytecode to handle loading from anything that can map to an IO handle (https://colabti.org/irclogger/irclogger_log/moarvm?date=2019-07-09#l85)
+- Eliminate the bash dependency. Not all machines have bash, and it would be nice to reduce the number of things required to use the executable.
+- Eliminate the gcc dependency for the target computer. It is very possible that a person would want to deploy an executable on a system that doesn't have gcc installed.
+- Convert the existing code in p6_linker to NQP or Perl 6. Since it is a long term goal to have the compiler for Perl 6 written entirely in Perl 6, it would be nice to go ahead and move this chunk of code in that direction.
+- Make packaging of the modules optional. This may actually be solved by my efforts this coming week, but there are no guarantees. This would require either overloading an existing flag to designate whether you want a fully packaged executable including all modules, or an executable which only contains the original file. Then, the issues with determining the path to the modules on the host computer will have to be resolved.
+- Get it to work on Windows. This will likely be a pretty substantial undertaking. Everything in the main.c file will need to essentially be replicated using PE instead of ELF. Thankfully, while it is a large task, it's a fairly straightforward one.
+- Get it to work on OSX. Again, everything in the main.c file will need to be replicated, this time using Mach-O instead of ELF.
+- Alter --bytecode to use any IO:Handle. (Suggested via conversation with lizmat) This is currently a bit beyond my understanding of how perl6 works, so I'm not sure how complicated this would be to implement.
+- Eliminate unpacking packed bytecode to temporary files (suggested by timotimo and ggoebel) Use something like memfd_create to copy packaged files into memory and pass a file descriptor
+- Explore additional command line options (suggested by cygx). Some suggestions for additional command line options related to this project have been listed here. Final decisions on these command line options would likely need to be made by someone more qualified than me, but it would definitely be nice to have an option for a fully self contained executable versus the option I have right now, which requires Rakudo to be installed on the target system.
+
+If there are any features you would like to see added, feel free to add them to this list!
+If there are any of these features or improvements that you would like to try your hand at tackling,
+please do so and make a pull request github.com/perl6/nqp's self-contained-executable branch!
